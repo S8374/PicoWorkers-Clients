@@ -1,0 +1,21 @@
+/* Hero section should take at least the full viewport height */
+.hero {
+    min-height: 100vh; /* Make Hero section full screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures the footer is pushed down */
+    position: relative; /* So that any positioning or z-index doesn't overlap the footer */
+  }
+  
+  footer {
+    position: relative;
+    z-index: 1; /* Ensure footer is on top if needed */
+  }
+  
+  .awesome-slider {
+    width: 100%;
+    height: 100%; /* Ensure the slider takes full space of its container */
+    position: relative;
+    z-index: 0; /* Keep slider under other elements if necessary */
+  }
+  
