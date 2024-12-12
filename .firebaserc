@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "picoworkers-3f3c5"
-  }
+    "default": "picoworkers-3f3c5",
+    "y": "picowokers2-91495"
+  },
+  "targets": {},
+  "etags": {}
 }
