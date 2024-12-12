@@ -118,73 +118,117 @@ export const ManageUsers = () => {
   };
 
   return (
-    <div>
+    <div className="px-4 md:px-8">
       <div className="overflow-x-auto">
-        <h1 className="text-center font1 text-3xl">Total Users: {Users.length} </h1>
-        <table className="table w-full">
-          {/* Table Head */}
-          <thead className="bg-gradient-to-r font1 from-purple-600 via-indigo-600 to-blue-600 text-white text-xl">
-            <tr>
-              <th>
-                <label></label>
-              </th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Coin</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        <h1 className="text-center font-semibold text-2xl md:text-3xl mb-4">Total Users: {Users.length}</h1>
 
-          {/* Table Body */}
-          <tbody>
-            {Users.map((user) => (
-              <tr key={user._id}>
-                <th>
-                  <label></label>
-                </th>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
+        {/* Table - Visible on medium screens and larger */}
+        <div className="hidden md:block">
+          <table className="table-auto w-full text-sm md:text-base">
+            {/* Table Head */}
+            <thead className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white text-lg md:text-xl">
+              <tr>
+                <th className="p-2">#</th>
+                <th className="p-2">Name</th>
+                <th className="p-2">Role</th>
+                <th className="p-2">Coin</th>
+                <th className="p-2">Action</th>
+              </tr>
+            </thead>
+
+            {/* Table Body */}
+            <tbody className="bg-white">
+              {Users.map((user, index) => (
+                <tr key={user._id} className="hover:bg-gray-100">
+                  <td className="p-2 text-center">{index + 1}</td>
+                  <td className="p-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10">
                         <img
+                          className="rounded-full"
                           src={user.photoUrl || "https://via.placeholder.com/150"}
-                          alt={user.photoUrl || "User Avatar"}
+                          alt={user.name || "User Avatar"}
                         />
                       </div>
+                      <div>
+                        <div className="font-medium">{user.name}</div>
+                        <div className="text-sm text-gray-500">{user.email}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold">{user.name}</div>
-                      <div className="text-sm opacity-50">{user.email}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  {user.role}
-                  <br />
-                  <span className="badge badge-ghost badge-sm">{user?.userCategory || "N/A"}</span>
-                </td>
-                <td>
-                  {user.coins}
-                </td>
-                <th>
-                  <Dropdown className="bg-background border-1 border-default-200">
+                  </td>
+                  <td className="p-2 text-center">{user.role}</td>
+                  <td className="p-2 text-center">{user.coins}</td>
+                  <td className="p-2 text-center">
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button isIconOnly radius="full" size="sm" variant="light">
+                          <HiDotsVertical className="text-xl" />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu>
+                        <DropdownItem key="admin" onClick={() => handleMakeAdmin(user._id)}>
+                          Make Admin
+                        </DropdownItem>
+                        <DropdownItem key="worker" onClick={() => handleMakeWorker(user._id)}>
+                          Make Worker
+                        </DropdownItem>
+                        <DropdownItem key="task-creator" onClick={() => handleMakeTaskCreator(user._id)}>
+                          Make Task Creator
+                        </DropdownItem>
+                        <DropdownItem key="delete" onClick={() => handleDeleteUser(user._id)}>
+                          Delete User
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile View - Users displayed as a list on mobile */}
+        <div className="md:hidden">
+          {Users.map((user, index) => (
+            <div key={user._id} className="flex items-center gap-3 p-4 border-b">
+              <div className="w-12 h-12">
+                <img
+                  className="rounded-full"
+                  src={user.photoUrl || "https://via.placeholder.com/150"}
+                  alt={user.name || "User Avatar"}
+                />
+              </div>
+              <div className="flex-1">
+                <div className="font-medium">{user.name}</div>
+                <div className="text-sm text-gray-500">{user.email}</div>
+                <div className="mt-2 flex justify-between items-center">
+                  <div className="text-sm text-gray-600">Role: {user.role}</div>
+                  <Dropdown>
                     <DropdownTrigger>
                       <Button isIconOnly radius="full" size="sm" variant="light">
-                        <HiDotsVertical className="text-default-400 text-3xl" />
+                        <HiDotsVertical className="text-xl" />
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem key="view" onClick={() => handleMakeAdmin(user._id)}>Make Admin</DropdownItem>
-                      <DropdownItem key="edit" onClick={() => handleMakeWorker(user._id)}>Make Worker</DropdownItem>
-                      <DropdownItem key="delete" onClick={() => handleMakeTaskCreator(user._id)}>Make Task Creator</DropdownItem>
-                      <DropdownItem key="delete" onClick={() => handleDeleteUser(user._id)}>Delete User</DropdownItem>
+                      <DropdownItem key="admin" onClick={() => handleMakeAdmin(user._id)}>
+                        Make Admin
+                      </DropdownItem>
+                      <DropdownItem key="worker" onClick={() => handleMakeWorker(user._id)}>
+                        Make Worker
+                      </DropdownItem>
+                      <DropdownItem key="task-creator" onClick={() => handleMakeTaskCreator(user._id)}>
+                        Make Task Creator
+                      </DropdownItem>
+                      <DropdownItem key="delete" onClick={() => handleDeleteUser(user._id)}>
+                        Delete User
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
-                </th>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -14,12 +14,13 @@ import { ManageTasks } from '../Components/DashBoard/Admin/ManageTasks/ManageTas
 
 import { SellCoins } from '../Components/DashBoard/Admin/SellCoins/SellCoins';
 import { ByeCoins } from '../Components/DashBoard/BuyCoins/ByeCoins';
-import { PaymentSucsess } from '../Components/DashBoard/PaymentSucsess/PaymentSucsess';
+
 import { FailPayments } from '../Components/DashBoard/FailPayments/FailPayments';
 import { CoinBuyReq } from '../Components/DashBoard/Admin/CoinBuyReq/CoinBuyReq';
 import { PaymentHistory } from '../Components/DashBoard/TaskCreator/PaymentHistory/PaymentHistory';
 import AdminRoute from '../Components/Private/AdminRoute/AdminRoute';
 import { WithDrawalForm } from '../Components/DashBoard/Worker/WithDrawalForm/WithDrawalForm';
+import { PaymentSuccess } from '../Components/DashBoard/PaymentSucsess/PaymentSucsess';
 
 
 
@@ -35,7 +36,7 @@ export const Routes = createBrowserRouter([
       {
 
         path: 'success/:tran_id',
-        element: <PaymentSucsess></PaymentSucsess>
+        element: <PaymentSuccess></PaymentSuccess>
 
       },
       {

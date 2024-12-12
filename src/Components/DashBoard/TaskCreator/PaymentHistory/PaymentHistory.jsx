@@ -41,7 +41,9 @@ export const PaymentHistory = () => {
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold mb-4 text-center font1">Payment History ({payments.length})</h1>
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+
+      {/* Table (Hidden on mobile) */}
+      <div className="overflow-x-auto bg-white shadow-md rounded-lg hidden md:block">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gradient-to-r text-white from-purple-600 via-indigo-600 to-blue-600">
@@ -68,6 +70,22 @@ export const PaymentHistory = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View (Visible on mobile) */}
+      <div className="block md:hidden">
+        {payments.map((coin, index) => (
+          <div key={coin._id} className="bg-white shadow-md rounded-lg p-4 mb-4">
+            <div className="flex justify-between">
+              <span className="font-bold text-gray-800 text-lg">{coin.name}</span>
+              <span className="text-gray-500 text-sm">{formatTimestamp(coin.timestamp)}</span>
+            </div>
+            <div className="text-sm text-gray-600">{coin.email}</div>
+            <div className="mt-2 text-lg font-semibold">
+              {coin.coinPrice || "No Amount Available"}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

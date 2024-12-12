@@ -129,7 +129,7 @@ export const SignUp = ({ onSuccess }) => {
 
         {/* Select Field */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Select Your Category</label>
+          <label className="block text-sm font-medium text-gray-700">Select Your role</label>
           <select
             {...register("category", { required: "Category is required" })}
             className="mt-2 block w-full px-4 py-2 text-sm text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

@@ -55,11 +55,31 @@ export const MySubmission = () => {
           {filteredData.length === 0 ? (
             <p className="text-center text-gray-500">No tasks found for your account.</p>
           ) : (
-            <table className="table-auto w-full text-sm text-left text-gray-700 border-separate border-spacing-0">
+            <div className="block md:hidden overflow-x-auto mb-6">
+              {/* Mobile View - Tasks displayed as cards */}
+              {filteredData.map((task) => (
+                <div key={task._id} className="bg-white shadow-md rounded-lg mb-4 p-4 border border-gray-300">
+                  <h2 className="text-xl font-semibold text-gray-800">{task.title}</h2>
+                  <p className="text-gray-600">Quantity: {task.quantity}</p>
+                  <p className="text-gray-600">Payable Amount: {task.payableAmount}$</p>
+                  <p className="text-gray-600">Completion Date: {task.completionDate}</p>
+                  <button
+                    className={`mt-4 px-4 py-2 rounded-md text-white ${getStatusColor(task.status)}`}
+                  >
+                    {task.status === 'pending' ? 'Pending Approval' : task.status}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Desktop View - Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="min-w-full text-sm text-left text-gray-700 border-separate border-spacing-0">
               <thead className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white">
                 <tr>
                   <th className="p-4 font1">Title</th>
-                  <th className="p-4 font1 ">Quantity</th>
+                  <th className="p-4 font1">Quantity</th>
                   <th className="p-4 font1">Payable Amount</th>
                   <th className="p-4 font1">Completion Date</th>
                   <th className="p-4 font1">Status</th>
@@ -81,7 +101,7 @@ export const MySubmission = () => {
                 ))}
               </tbody>
             </table>
-          )}
+          </div>
         </div>
       )}
     </div>

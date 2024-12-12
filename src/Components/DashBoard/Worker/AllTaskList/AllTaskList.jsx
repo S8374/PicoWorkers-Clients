@@ -16,14 +16,15 @@ export const AllTaskList = () => {
 
   // Filter out tasks that have status "pending"
   const filteredTaskItems = taskItems.filter(item => item.status !== "pending");
-
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800 font1">Task List</h1>
-      <div className="overflow-x-auto">
+
+      {/* Table for larger screens */}
+      <div className="overflow-x-auto hidden sm:block">
         <table className="min-w-full table-auto border-collapse border border-gray-300 rounded-lg shadow-lg">
           {/* Table Head */}
-          <thead className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600   text-white text-sm">
+          <thead className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white text-sm">
             <tr>
               <th className="p-3 text-left font1">#</th>
               <th className="p-3 text-left font1">Task Title</th>
@@ -74,6 +75,32 @@ export const AllTaskList = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile View: Stack rows as cards */}
+      <div className="sm:hidden mt-6">
+        {filteredTaskItems.length > 0 ? (
+          filteredTaskItems.map((item, index) => (
+            <div
+              key={item._id}
+              className="bg-white shadow-md rounded-lg p-4 mb-4"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="font-medium text-lg text-gray-800">{item.title}</h2>
+                <span className="text-gray-500">{`$${item.payableAmount}`}</span>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">Expire Date: {new Date(item.completionDate).toLocaleDateString()}</p>
+              <Link
+                to={`/dashboard/workers/details/${item._id}`}
+                className="mt-3 block text-center text-blue-600"
+              >
+                See Details
+              </Link>
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500">No tasks available.</div>
+        )}
       </div>
     </div>
   );

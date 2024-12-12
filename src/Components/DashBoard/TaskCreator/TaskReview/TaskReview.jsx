@@ -94,18 +94,21 @@ export const TaskReview = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl text-center  font1 font-bold text-blue-500 mb-4">Task Review ({data.length})</h1>
+      <h1 className="text-3xl text-center font1 font-bold text-blue-500 mb-4">
+        Task Review ({data.length})
+      </h1>
 
-      <div className="overflow-x-auto rounded-lg shadow-md">
+      {/* Table View for larger screens */}
+      <div className="overflow-x-auto rounded-lg shadow-md hidden sm:block">
         <table className="table w-full">
           {/* Table Head */}
           <thead className="bg-gradient-to-r text-white from-purple-600 via-indigo-600 to-blue-600">
             <tr>
               <th className="p-3 text-left ">#</th>
-              <th className="p-3 text-left  text-xl font1">Name</th>
-              <th className="p-3 text-left  text-xl font1">Details</th>
+              <th className="p-3 text-left text-xl font1">Name</th>
+              <th className="p-3 text-left text-xl font1">Details</th>
               <th className="p-3 text-xl font1 text-left ">Status</th>
-              <th className="p-3 text-center  text-xl font1">Actions</th>
+              <th className="p-3 text-center text-xl font1">Actions</th>
             </tr>
           </thead>
 
@@ -167,6 +170,44 @@ export const TaskReview = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Card View for mobile devices */}
+      <div className="sm:hidden">
+        {data.map((task, index) => (
+          <div
+            key={task.id || index}
+            className="bg-white shadow-md rounded-lg p-4 mb-4"
+          >
+            <div className="flex justify-between items-center">
+              <h2 className="font-medium text-lg text-gray-800">{task.title || `Task ${index + 1}`}</h2>
+              <span className="text-gray-500">{task.payableAmount || "Unknown Amount"}</span>
+            </div>
+            <p className="text-sm text-gray-600 mt-2">User: {task.UserName || "Unknown Name"}</p>
+            <p className="text-sm text-gray-600 mt-2">Expire Date: {new Date(task.completionDate).toLocaleDateString()}</p>
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                task.status === "Pending"
+                  ? "bg-yellow-100 text-yellow-600"
+                  : "bg-green-100 text-green-600"
+              }`}
+            >
+              {task.status || "Unknown"}
+            </span>
+            <div className="mt-3 text-center">
+              {task.status === "Pending" ? (
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => handleApprove(task._id, task.UserEmail)}
+                >
+                  Approve
+                </button>
+              ) : (
+                <span className="text-sm text-green-500 font-semibold">Already Approved</span>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

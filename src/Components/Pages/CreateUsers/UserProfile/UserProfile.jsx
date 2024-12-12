@@ -10,14 +10,21 @@ import { UseAuth } from "../../../../Hooks/useAuth";
 import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UseUsers } from "../../../../Hooks/useUsers";
+import { UseAxiosSecure } from "../../../../Hooks/useAxiosSecure";
 
 export const UserProfile = () => {
     const { user, logOut } = UseAuth();
     const [users, loading, refetch] = UseUsers();
+    const axiosSecure = UseAxiosSecure();
 
-    const userCoins = users?.find((u) => u.email === user?.email)?.coins || 0;
-    const userCategory =
-        users?.find((u) => u.email === user?.email)?.userCategory || "Unknown";
+    // Find the user profile safely
+    const userProfile = users?.find((u) => u.email === user?.email) || {};
+    console.log(userProfile);
+
+    // Get the user role or default to 'User Category'
+    const userRole = userProfile?.role || "User Category";
+    const userCategory = userProfile?.userCategory || "Unknown"; // Default if userCategory is missing
+
     const handleLogout = async () => {
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -63,7 +70,7 @@ export const UserProfile = () => {
                 <DropdownItem key="profile" className="py-4 px-4 flex flex-col gap-2">
                     <p className="text-sm font-semibold text-gray-600">Signed in as:</p>
                     <p className="text-lg font-bold text-gray-800 truncate">
-                        {user.displayName || "User Name"}
+                        {user?.displayName || "User Name"}
                     </p>
                     <p className="text-sm font-medium text-blue-500">
                         {user?.email || "zoey@example.com"}
@@ -78,18 +85,28 @@ export const UserProfile = () => {
                     <FaCoins className="text-yellow-500 text-2xl" />
                     <span className="text-gray-700 font-semibold">
                         Coins:{" "}
-                        <span className="text-gray-900 font-bold text-lg">{userCoins}</span>
+                        <span className="text-gray-900 font-bold text-lg"></span>
                     </span>
                 </DropdownItem>
 
-                {/* User Category */}
-                <DropdownItem
-                    key="category"
-                    className="flex items-center gap-3 border-t border-gray-200 px-4 py-2"
-                >
-                    <span className="text-gray-700 font-semibold">Category:</span>
-                    <span className="text-gray-900 font-bold text-lg">{userCategory}</span>
-                </DropdownItem>
+                {/* Conditionally display Role or User Category */}
+                {userRole !== "User Category" ? (
+                    <DropdownItem
+                        key="role"
+                        className="flex items-center gap-3 border-t border-gray-200 px-4 py-2"
+                    >
+                        <span className="text-gray-700 font-semibold">Role:</span>
+                        <span className="text-gray-900 font-bold text-lg">{userRole}</span>
+                    </DropdownItem>
+                ) : (
+                    <DropdownItem
+                        key="category"
+                        className="flex items-center gap-3 border-t border-gray-200 px-4 py-2"
+                    >
+                        <span className="text-gray-700 font-semibold">User Category:</span>
+                        <span className="text-gray-900 font-bold text-lg">{userCategory}</span>
+                    </DropdownItem>
+                )}
 
                 {/* Dashboard Link */}
                 <DropdownItem
@@ -104,7 +121,6 @@ export const UserProfile = () => {
                         Dashboard
                     </NavLink>
                 </DropdownItem>
-
 
                 {/* Logout */}
                 <DropdownItem
